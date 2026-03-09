@@ -1,0 +1,17 @@
+#pragma once
+#include <string>
+#include <nlohmann/json.hpp>
+
+struct Config {
+    std::string uid;
+    std::string server_url;
+    int poll_interval_sec = 10;
+    std::string work_dir;
+    std::string results_dir;
+    std::string log_file;
+    std::string log_level = "info";
+    std::string access_code;
+
+    bool loadFromFile(const std::string& path);
+    void saveAccessCode(const std::string& code);
+};
