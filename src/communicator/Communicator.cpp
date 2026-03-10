@@ -1,18 +1,16 @@
 #include "Communicator.h"
 #include <spdlog/spdlog.h>
 #include <cpr/cpr.h>
+#include <random>
 
-/**
- * @brief Constructor for Communicator
- * @param baseUrl Base URL of the server
- */
-Communicator::Communicator(const std::string& baseUrl) : baseUrl_(baseUrl) {}
+Communicator::Communicator(const std::string& baseUrl, bool mockMode) 
+    : baseUrl_(baseUrl), mockMode_(mockMode) {}
 
-/**
- * @brief Build full URL from endpoint
- * @param endpoint API endpoint path
- * @return Complete URL string
- */
+void Communicator::setMockMode(bool enable) {
+    mockMode_ = enable;
+    spdlog::info("Mock mode {}", enable ? "enabled" : "disabled");
+}
+
 std::string Communicator::buildUrl(const std::string& endpoint) const {
     if (baseUrl_.empty()) return endpoint;
     if (baseUrl_.back() == '/')
@@ -21,13 +19,92 @@ std::string Communicator::buildUrl(const std::string& endpoint) const {
         return baseUrl_ + "/" + endpoint;
 }
 
-/**
- * @brief Register agent with the server
- * @param uid Unique identifier of the agent
- * @param descr Description of the agent
- * @return Access code if registration successful, std::nullopt otherwise
- */
+// Заглушка для регистрации
+std::optional<std::string> Communicator::mockRegister(const std::string& uid) {
+    spdlog::info("[MOCK] Registering agent with UID: {}", uid);
+    
+    // Генерируем случайный access_code
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 15);
+    
+    const char* hex_digits = "0123456789abcdef";
+    std::string code(32, '0');
+    for (int i = 0; i < 32; ++i) {
+        code[i] = hex_digits[dis(gen)];
+    }
+    // Форматируем как в примере: "594807-1ddb-36af-9616-d8ed2b9d"
+    std::string formatted = code.substr(0, 6) + "-" + code.substr(6, 4) + "-" +
+                           code.substr(10, 4) + "-" + code.substr(14, 4) + "-" +
+                           code.substr(18, 8);
+    
+    spdlog::info("[MOCK] Registration successful, access code: {}", formatted);
+    return formatted;
+}
+
+// Заглушка для получения задания
+std::optional<nlohmann::json> Communicator::mockFetchTask(const std::string& uid, const std::string& accessCode) {
+    spdlog::info("[MOCK] Fetching task for UID: {}, access code: {}", uid, accessCode);
+    
+    mockTaskCounter_++;
+    
+    // Каждый третий раз возвращаем задание, иначе "нет задания"
+    if (mockTaskCounter_ % 3 == 0) {
+        // Генерируем session_id
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, 15);
+        const char* chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        std::string session_id(36, '0');
+        for (int i = 0; i < 36; ++i) {
+            if (i == 8 || i == 13 || i == 18 || i == 23) {
+                session_id[i] = '-';
+            } else {
+                session_id[i] = chars[dis(gen) % 62];
+            }
+        }
+        
+        nlohmann::json task = {
+            {"code_response", 1},
+            {"task_code", "CONF"},
+            {"options", "echo 'Hello from mock task'"},
+            {"session_id", session_id},
+            {"status", "RUN"}
+        };
+        spdlog::info("[MOCK] Task assigned: {}", task.dump());
+        return task;
+    } else {
+        nlohmann::json response = {
+            {"code_response", 0},
+            {"status", "WAIT"}
+        };
+        spdlog::info("[MOCK] No task, waiting");
+        return response;
+    }
+}
+
+// Заглушка для отправки результата
+bool Communicator::mockSendResult(const std::string& uid, const std::string& accessCode,
+                                 const std::string& sessionId, int resultCode,
+                                 const std::string& message, int filesCount,
+                                 const std::vector<std::string>& filePaths) {
+    spdlog::info("[MOCK] Sending result for session: {}", sessionId);
+    spdlog::info("[MOCK]   result_code: {}, message: {}, files: {}", resultCode, message, filesCount);
+    
+    for (size_t i = 0; i < filePaths.size(); ++i) {
+        spdlog::info("[MOCK]   file{}: {}", i+1, filePaths[i]);
+    }
+    
+    // Всегда успех
+    return true;
+}
+
+// Оригинальные методы с выбором режима
 std::optional<std::string> Communicator::registerAgent(const std::string& uid, const std::string& descr) {
+    if (mockMode_) {
+        return mockRegister(uid);
+    }
+    
     nlohmann::json req;
     req["UID"] = uid;
     req["descr"] = descr;
@@ -67,13 +144,11 @@ std::optional<std::string> Communicator::registerAgent(const std::string& uid, c
     return std::nullopt;
 }
 
-/**
- * @brief Fetch task from the server
- * @param uid Unique identifier of the agent
- * @param accessCode Access code for authentication
- * @return JSON task data if successful, std::nullopt otherwise
- */
 std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, const std::string& accessCode) {
+    if (mockMode_) {
+        return mockFetchTask(uid, accessCode);
+    }
+    
     nlohmann::json req;
     req["UID"] = uid;
     req["descr"] = "web-agent";
@@ -102,21 +177,15 @@ std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, co
     }
 }
 
-/**
- * @brief Send task result to the server
- * @param uid Unique identifier of the agent
- * @param accessCode Access code for authentication
- * @param sessionId Session identifier
- * @param resultCode Result code of the task execution
- * @param message Result message
- * @param filesCount Number of files in the result
- * @param filePaths Paths to result files
- * @return true if result sent successfully, false otherwise
- */
 bool Communicator::sendResult(const std::string& uid, const std::string& accessCode,
                               const std::string& sessionId, int resultCode,
                               const std::string& message, int filesCount,
                               const std::vector<std::string>& filePaths) {
-    spdlog::warn("sendResult not implemented yet");
-    return true;
+    if (mockMode_) {
+        return mockSendResult(uid, accessCode, sessionId, resultCode, message, filesCount, filePaths);
+    }
+    
+    // Здесь будет реальная отправка
+    spdlog::warn("Real sendResult not implemented yet");
+    return false;
 }

@@ -3,12 +3,12 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include "config/Config.h"
 #include "communicator/Communicator.h"
+#include "utils/SignalHandler.h"
 #include <thread>
 #include <chrono>
 
-
 int main() {
-
+    // Настройка логгера
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     console_sink->set_level(spdlog::level::debug);
     
@@ -21,7 +21,7 @@ int main() {
     
     spdlog::info("Web Agent starting...");
 
-    
+    // Загрузка конфига
     Config cfg;
     if (!cfg.loadFromFile("config.json")) {
         spdlog::error("Failed to load config. Exiting.");
@@ -31,8 +31,14 @@ int main() {
     spdlog::info("Loaded config: UID={}, server={}, interval={} sec", 
                  cfg.uid, cfg.server_url, cfg.poll_interval_sec);
 
+    // Инициализация обработчика сигналов
+    SignalHandler::init([]() {
+        spdlog::info("Shutdown requested, cleaning up...");
+        // Здесь можно добавить cleanup
+    });
+
     // Инициализация коммуникатора
-    Communicator comm(cfg.server_url);
+    Communicator comm(cfg.server_url, true);
 
     // Если нет access_code - регистрируемся
     if (cfg.access_code.empty()) {
@@ -49,13 +55,27 @@ int main() {
         spdlog::debug("Using existing access code: {}", cfg.access_code);
     }
 
-    spdlog::info("Requesting task...");
-    auto taskJson = comm.fetchTask(cfg.uid, cfg.access_code);
-    if (taskJson.has_value()) {
-        spdlog::info("Task response: {}", taskJson->dump(4));
-    } else {
-        spdlog::error("Failed to fetch task.");
+    // Основной цикл
+    spdlog::info("Entering main loop. Press Ctrl+C to stop.");
+    
+    while (!SignalHandler::shouldStop()) {
+        spdlog::debug("Requesting task...");
+        auto taskJson = comm.fetchTask(cfg.uid, cfg.access_code);
+        
+        if (taskJson.has_value()) {
+            spdlog::info("Task response received");
+            // Здесь будет обработка задания
+        } else {
+            spdlog::error("Failed to fetch task.");
+        }
+        
+        // Проверяем каждую секунду, не пора ли выйти
+        for (int i = 0; i < cfg.poll_interval_sec; ++i) {
+            if (SignalHandler::shouldStop()) break;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
     }
 
+    spdlog::info("Agent stopped gracefully");
     return 0;
 }

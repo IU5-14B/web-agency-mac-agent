@@ -12,22 +12,33 @@ option(BUILD_TESTS "Build tests" OFF)
 # Путь к исполняемым файлам
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-# Подключаем файл с зависимостями
 
 
-# Собираем список всех исходников (рекурсивно)
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-file(GLOB_RECURSE HEADERS "src/*.h")
+# Явный список исходников
+set(SOURCES
+    src/main.cpp
+    src/agent/Agent.cpp
+    src/config/Config.cpp
+    src/communicator/Communicator.cpp
+    src/logger/Logger.cpp
+    src/executor/TaskExecutor.cpp
+    src/utils/Utils.cpp
+    src/utils/SignalHandler.cpp
+)
 
-add_executable(web-agent ${SOURCES} ${HEADERS})
+# Исполняемый файл агента
+add_executable(web-agent ${SOURCES})
 
 # Подключаем директории с заголовками
 target_include_directories(web-agent PRIVATE src)
 
+# Подключаем зависимости
 include(cmake/dependencies.cmake)
 
+# Линковка агента
+target_link_libraries(web-agent PRIVATE spdlog::spdlog_header_only cpr::cpr)
 
-# Если тесты включены
+# Тесты
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
