@@ -6,6 +6,7 @@
 #include <thread>
 #include <chrono>
 
+
 int main() {
 
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
@@ -20,7 +21,7 @@ int main() {
     
     spdlog::info("Web Agent starting...");
 
-    // Загрузка конфига
+    
     Config cfg;
     if (!cfg.loadFromFile("config.json")) {
         spdlog::error("Failed to load config. Exiting.");

@@ -2,8 +2,17 @@
 #include <spdlog/spdlog.h>
 #include <cpr/cpr.h>
 
+/**
+ * @brief Constructor for Communicator
+ * @param baseUrl Base URL of the server
+ */
 Communicator::Communicator(const std::string& baseUrl) : baseUrl_(baseUrl) {}
 
+/**
+ * @brief Build full URL from endpoint
+ * @param endpoint API endpoint path
+ * @return Complete URL string
+ */
 std::string Communicator::buildUrl(const std::string& endpoint) const {
     if (baseUrl_.empty()) return endpoint;
     if (baseUrl_.back() == '/')
@@ -12,6 +21,12 @@ std::string Communicator::buildUrl(const std::string& endpoint) const {
         return baseUrl_ + "/" + endpoint;
 }
 
+/**
+ * @brief Register agent with the server
+ * @param uid Unique identifier of the agent
+ * @param descr Description of the agent
+ * @return Access code if registration successful, std::nullopt otherwise
+ */
 std::optional<std::string> Communicator::registerAgent(const std::string& uid, const std::string& descr) {
     nlohmann::json req;
     req["UID"] = uid;
@@ -52,6 +67,12 @@ std::optional<std::string> Communicator::registerAgent(const std::string& uid, c
     return std::nullopt;
 }
 
+/**
+ * @brief Fetch task from the server
+ * @param uid Unique identifier of the agent
+ * @param accessCode Access code for authentication
+ * @return JSON task data if successful, std::nullopt otherwise
+ */
 std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, const std::string& accessCode) {
     nlohmann::json req;
     req["UID"] = uid;
@@ -81,11 +102,21 @@ std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, co
     }
 }
 
+/**
+ * @brief Send task result to the server
+ * @param uid Unique identifier of the agent
+ * @param accessCode Access code for authentication
+ * @param sessionId Session identifier
+ * @param resultCode Result code of the task execution
+ * @param message Result message
+ * @param filesCount Number of files in the result
+ * @param filePaths Paths to result files
+ * @return true if result sent successfully, false otherwise
+ */
 bool Communicator::sendResult(const std::string& uid, const std::string& accessCode,
                               const std::string& sessionId, int resultCode,
                               const std::string& message, int filesCount,
                               const std::vector<std::string>& filePaths) {
-    // Пока заглушка
     spdlog::warn("sendResult not implemented yet");
     return true;
 }

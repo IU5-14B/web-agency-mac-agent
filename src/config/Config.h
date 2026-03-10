@@ -12,6 +12,16 @@ struct Config {
     std::string log_level = "info";
     std::string access_code;
 
+    /**
+     * @brief Load configuration from file
+     * @param path Path to configuration file
+     * @return true if loading successful, false otherwise
+     */
     bool loadFromFile(const std::string& path);
+    
+    /**
+     * @brief Save access code to configuration
+     * @param code Access code to save
+     */
     void saveAccessCode(const std::string& code);
 };
