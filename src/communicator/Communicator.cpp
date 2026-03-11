@@ -3,14 +3,28 @@
 #include <cpr/cpr.h>
 #include <random>
 
+/**
+ * @brief Constructor for Communicator
+ * @param baseUrl Base URL of the server
+ * @param mockMode Enable mock mode for testing
+ */
 Communicator::Communicator(const std::string& baseUrl, bool mockMode) 
     : baseUrl_(baseUrl), mockMode_(mockMode) {}
 
+/**
+ * @brief Enable or disable mock mode
+ * @param enable true to enable mock mode, false to disable
+ */
 void Communicator::setMockMode(bool enable) {
     mockMode_ = enable;
     spdlog::info("Mock mode {}", enable ? "enabled" : "disabled");
 }
 
+/**
+ * @brief Build full URL from endpoint
+ * @param endpoint API endpoint path
+ * @return Complete URL string
+ */
 std::string Communicator::buildUrl(const std::string& endpoint) const {
     if (baseUrl_.empty()) return endpoint;
     if (baseUrl_.back() == '/')
@@ -19,7 +33,11 @@ std::string Communicator::buildUrl(const std::string& endpoint) const {
         return baseUrl_ + "/" + endpoint;
 }
 
-// Заглушка для регистрации
+/**
+ * @brief Mock implementation of agent registration
+ * @param uid Unique identifier of the agent
+ * @return Mock access code
+ */
 std::optional<std::string> Communicator::mockRegister(const std::string& uid) {
     spdlog::info("[MOCK] Registering agent with UID: {}", uid);
     
@@ -55,7 +73,12 @@ std::optional<std::string> Communicator::mockRegister(const std::string& uid) {
     return result;
 }
 
-// Заглушка для получения задания
+/**
+ * @brief Mock implementation of task fetching
+ * @param uid Unique identifier of the agent
+ * @param accessCode Access code for authentication
+ * @return Mock JSON task data
+ */
 std::optional<nlohmann::json> Communicator::mockFetchTask(const std::string& uid, const std::string& accessCode) {
     spdlog::info("[MOCK] Fetching task for UID: {}, access code: {}", uid, accessCode);
     
@@ -100,7 +123,17 @@ std::optional<nlohmann::json> Communicator::mockFetchTask(const std::string& uid
     }
 }
 
-// Заглушка для отправки результата
+/**
+ * @brief Mock implementation of result sending
+ * @param uid Unique identifier of the agent
+ * @param accessCode Access code for authentication
+ * @param sessionId Session identifier
+ * @param resultCode Result code of the task execution
+ * @param message Result message
+ * @param filesCount Number of files in the result
+ * @param filePaths Paths to result files
+ * @return true (always successful in mock mode)
+ */
 bool Communicator::mockSendResult(const std::string& uid, const std::string& accessCode,
                                  const std::string& sessionId, int resultCode,
                                  const std::string& message, int filesCount,
@@ -116,7 +149,12 @@ bool Communicator::mockSendResult(const std::string& uid, const std::string& acc
     return true;
 }
 
-// Оригинальные методы с выбором режима
+/**
+ * @brief Register agent with the server
+ * @param uid Unique identifier of the agent
+ * @param descr Description of the agent
+ * @return Access code if registration successful, std::nullopt otherwise
+ */
 std::optional<std::string> Communicator::registerAgent(const std::string& uid, const std::string& descr) {
     if (mockMode_) {
         return mockRegister(uid);
@@ -161,6 +199,12 @@ std::optional<std::string> Communicator::registerAgent(const std::string& uid, c
     return std::nullopt;
 }
 
+/**
+ * @brief Fetch task from the server
+ * @param uid Unique identifier of the agent
+ * @param accessCode Access code for authentication
+ * @return JSON task data if successful, std::nullopt otherwise
+ */
 std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, const std::string& accessCode) {
     if (mockMode_) {
         return mockFetchTask(uid, accessCode);
@@ -225,6 +269,17 @@ std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, co
     }
 }
 
+/**
+ * @brief Send task result to the server
+ * @param uid Unique identifier of the agent
+ * @param accessCode Access code for authentication
+ * @param sessionId Session identifier
+ * @param resultCode Result code of the task execution
+ * @param message Result message
+ * @param filesCount Number of files in the result
+ * @param filePaths Paths to result files
+ * @return true if result sent successfully, false otherwise
+ */
 bool Communicator::sendResult(const std::string& uid, const std::string& accessCode,
                               const std::string& sessionId, int resultCode,
                               const std::string& message, int filesCount,

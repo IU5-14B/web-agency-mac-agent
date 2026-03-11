@@ -12,6 +12,12 @@
 
 namespace fs = std::filesystem;
 
+/**
+ * @brief Main entry point for the web agent application
+ * @param argc Number of command line arguments
+ * @param argv Array of command line arguments
+ * @return 0 on success, 1 on error
+ */
 int main(int argc, char* argv[]) {
     // Настройка логгера
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();

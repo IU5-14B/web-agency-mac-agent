@@ -1,6 +1,11 @@
 #include "TaskResponse.h"
 #include <spdlog/spdlog.h>
 
+/**
+ * @brief Parse JSON response from server
+ * @param json JSON object from server
+ * @return Structured task response
+ */
 TaskResponse TaskResponseParser::parse(const nlohmann::json& json) {
     TaskResponse response;
     response.code = -1;
@@ -58,6 +63,11 @@ TaskResponse TaskResponseParser::parse(const nlohmann::json& json) {
     return response;
 }
 
+/**
+ * @brief Validate JSON response structure
+ * @param json JSON object to validate
+ * @return true if JSON is valid, false otherwise
+ */
 bool TaskResponseParser::isValid(const nlohmann::json& json) {
     return json.contains("code_response") || json.contains("code_responce");
 }

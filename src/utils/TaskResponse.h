@@ -18,17 +18,38 @@ struct TaskResponse {
     std::optional<TaskInfo> task;  // заполнено если code == 1
     std::string message;   // сообщение об ошибке если есть
     
-    // Флаги для удобства
+    /**
+     * @brief Check if response contains a task
+     * @return true if task is available, false otherwise
+     */
     bool hasTask() const { return code == 1 && task.has_value(); }
+    
+    /**
+     * @brief Check if response indicates waiting state
+     * @return true if waiting, false otherwise
+     */
     bool isWaiting() const { return code == 0; }
+    
+    /**
+     * @brief Check if response indicates an error
+     * @return true if error, false otherwise
+     */
     bool isError() const { return code < 0; }
 };
 
 class TaskResponseParser {
 public:
-    // Парсит JSON от сервера и возвращает структурированный ответ
+    /**
+     * @brief Parse JSON response from server
+     * @param json JSON object from server
+     * @return Structured task response
+     */
     static TaskResponse parse(const nlohmann::json& json);
     
-    // Проверяет, корректен ли JSON (содержит нужные поля)
+    /**
+     * @brief Validate JSON response structure
+     * @param json JSON object to validate
+     * @return true if JSON is valid, false otherwise
+     */
     static bool isValid(const nlohmann::json& json);
 };
