@@ -1,8 +1,10 @@
 #pragma once
+
 #include <string>
 #include <nlohmann/json.hpp>
 
-struct Config {
+class Config {
+public:
     std::string uid;
     std::string server_url;
     int poll_interval_sec = 10;
@@ -12,16 +14,7 @@ struct Config {
     std::string log_level = "info";
     std::string access_code;
 
-    /**
-     * @brief Load configuration from file
-     * @param path Path to configuration file
-     * @return true if loading successful, false otherwise
-     */
     bool loadFromFile(const std::string& path);
-    
-    /**
-     * @brief Save access code to configuration
-     * @param code Access code to save
-     */
+    bool saveToFile(const std::string& path);
     void saveAccessCode(const std::string& code);
 };

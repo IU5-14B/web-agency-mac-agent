@@ -170,6 +170,37 @@ std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, co
     
     try {
         auto respJson = nlohmann::json::parse(response.text);
+        
+        spdlog::debug("Task response: {}", respJson.dump());
+        
+        // Проверяем наличие code_response (с учётом опечатки)
+        int code = -1;
+        if (respJson.contains("code_response")) {
+            if (respJson["code_response"].is_string()) {
+                code = std::stoi(respJson["code_response"].get<std::string>());
+            } else {
+                code = respJson["code_response"].get<int>();
+            }
+        } else if (respJson.contains("code_responce")) {
+            if (respJson["code_responce"].is_string()) {
+                code = std::stoi(respJson["code_responce"].get<std::string>());
+            } else {
+                code = respJson["code_responce"].get<int>();
+            }
+        }
+        
+        if (code == 0) {
+            spdlog::info("No tasks available, status: {}", 
+                         respJson.value("status", "UNKNOWN"));
+        } else if (code == 1) {
+            spdlog::info("Task received: {}", respJson.value("task_code", "UNKNOWN"));
+        } else {
+            spdlog::warn("Task fetch code: {}", code);
+            if (respJson.contains("msg")) {
+                spdlog::warn("Message: {}", respJson["msg"].get<std::string>());
+            }
+        }
+        
         return respJson;
     } catch (const std::exception& e) {
         spdlog::error("JSON parse error in fetchTask: {}", e.what());

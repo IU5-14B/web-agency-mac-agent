@@ -24,6 +24,7 @@ set(SOURCES
     src/executor/TaskExecutor.cpp
     src/utils/Utils.cpp
     src/utils/SignalHandler.cpp
+    src/utils/TaskResponse.cpp
 )
 
 # Исполняемый файл агента
