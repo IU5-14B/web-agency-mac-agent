@@ -4,6 +4,8 @@
 #include <spdlog/spdlog.h>
 
 bool Config::loadFromFile(const std::string& path) {
+    last_config_path_ = path;  // запоминаем путь
+
     std::ifstream file(path);
     if (!file.is_open()) {
         spdlog::error("Cannot open config file: {}", path);
@@ -31,7 +33,7 @@ bool Config::loadFromFile(const std::string& path) {
     }
 }
 
-bool Config::saveToFile(const std::string& path) {
+bool Config::saveToFile(const std::string& path) {  // с параметром!
     nlohmann::json data;
     data["uid"] = uid;
     data["server_url"] = server_url;
@@ -55,6 +57,12 @@ bool Config::saveToFile(const std::string& path) {
 
 void Config::saveAccessCode(const std::string& code) {
     access_code = code;
-    saveToFile("config.json");
-    spdlog::info("Access code saved to config");
+    if (!last_config_path_.empty()) {
+        saveToFile(last_config_path_);  // используем сохранённый путь
+        spdlog::info("Access code saved to {}", last_config_path_);
+    } else {
+        // Если путь не известен, сохраняем в config.json по умолчанию
+        saveToFile("config.json");
+        spdlog::warn("No last path, saved to config.json");
+    }
 }

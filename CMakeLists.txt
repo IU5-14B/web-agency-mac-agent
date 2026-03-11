@@ -12,8 +12,6 @@ option(BUILD_TESTS "Build tests" OFF)
 # Путь к исполняемым файлам
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-
-
 # Явный список исходников
 set(SOURCES
     src/main.cpp
@@ -36,7 +34,7 @@ target_include_directories(web-agent PRIVATE src)
 # Подключаем зависимости
 include(cmake/dependencies.cmake)
 
-# Линковка агента
+# Линковка агента (только нужные библиотеки)
 target_link_libraries(web-agent PRIVATE spdlog::spdlog_header_only cpr::cpr)
 
 # Тесты

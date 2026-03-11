@@ -21,17 +21,14 @@ TaskResponse TaskResponseParser::parse(const nlohmann::json& json) {
             return response;
         }
         
-        // Извлекаем status если есть
         if (json.contains("status")) {
             response.status = json["status"].get<std::string>();
         }
         
-        // Извлекаем сообщение если есть
         if (json.contains("msg")) {
             response.message = json["msg"].get<std::string>();
         }
         
-        // Если это задание (code == 1), парсим детали
         if (response.code == 1) {
             TaskInfo task;
             task.code_response = response.code;
@@ -40,11 +37,10 @@ TaskResponse TaskResponseParser::parse(const nlohmann::json& json) {
             task.session_id = json.value("session_id", "");
             task.status = json.value("status", "RUN");
             
-            // Валидация обязательных полей
             if (task.task_code.empty() || task.session_id.empty()) {
                 spdlog::error("Task missing required fields");
                 response.message = "Invalid task format";
-                response.code = -5;  // Свой код ошибки
+                response.code = -5;
                 return response;
             }
             
@@ -55,7 +51,7 @@ TaskResponse TaskResponseParser::parse(const nlohmann::json& json) {
         
     } catch (const std::exception& e) {
         spdlog::error("Error parsing task response: {}", e.what());
-        response.code = -4;  // Ошибка парсинга
+        response.code = -4;
         response.message = "Parse error: " + std::string(e.what());
     }
     

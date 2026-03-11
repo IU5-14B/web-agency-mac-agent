@@ -17,4 +17,7 @@ public:
     bool loadFromFile(const std::string& path);
     bool saveToFile(const std::string& path);
     void saveAccessCode(const std::string& code);
+
+private:
+    std::string last_config_path_;
 };

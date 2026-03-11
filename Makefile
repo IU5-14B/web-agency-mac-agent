@@ -1,4 +1,4 @@
-.PHONY: help build compile clean test server run run-mock format
+.PHONY: help build compile clean test run run-mock server
 
 GREEN := \033[0;32m
 YELLOW := \033[1;33m
@@ -16,34 +16,37 @@ help:
 	@echo "$(GREEN)  build$(NC)        - Полная сборка (включая библиотеки)"
 	@echo "$(GREEN)  compile$(NC)      - Быстрая сборка только агента"
 	@echo "$(GREEN)  clean$(NC)        - Очистка сборки"
-	@echo "$(GREEN)  test$(NC)         - Запуск тестов"
+	@echo "$(GREEN)  test$(NC)         - Запуск всех тестов"
 	@echo "$(GREEN)  server$(NC)       - Проверка доступности сервера"
 	@echo "$(GREEN)  run$(NC)          - Запуск агента в реальном режиме"
 	@echo "$(GREEN)  run-mock$(NC)     - Запуск агента в mock-режиме"
-	@echo "$(GREEN)  format$(NC)       - Форматирование кода"
 
 build:
-	@echo "$(YELLOW)🔨 Полная сборка проекта...$(NC)"
+	@echo "$(YELLOW) Полная сборка проекта...$(NC)"
 	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && $(CMAKE) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) ..
+	cd $(BUILD_DIR) && $(CMAKE) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -DBUILD_TESTS=ON ..
 	$(MAKE) compile
 
 compile:
-	@echo "$(YELLOW)⚡ Компиляция агента...$(NC)"
+	@echo "$(YELLOW) Компиляция агента...$(NC)"
 	cd $(BUILD_DIR) && $(CMAKE) --build . --parallel 4
 
 clean:
-	@echo "$(YELLOW)🧹 Очистка...$(NC)"
+	@echo "$(YELLOW) Очистка...$(NC)"
 	rm -rf $(BUILD_DIR)
 	rm -f agent.log
 	rm -rf work results
 
 test:
-	@echo "$(YELLOW)🧪 Запуск тестов...$(NC)"
+	@echo "$(YELLOW) Запуск всех тестов...$(NC)"
+	@if [ ! -d $(BUILD_DIR) ]; then \
+		echo "$(RED)❌ Сначала выполните make build$(NC)"; \
+		exit 1; \
+	fi
 	cd $(BUILD_DIR) && ctest --output-on-failure
 
 server:
-	@echo "$(YELLOW)🌐 Проверка сервера...$(NC)"
+	@echo "$(YELLOW) Проверка сервера...$(NC)"
 	@if [ ! -f $(CONFIG_FILE) ]; then \
 		echo "$(RED)❌ Файл $(CONFIG_FILE) не найден!$(NC)"; \
 		exit 1; \
@@ -62,12 +65,12 @@ server:
 	fi
 
 run:
-	@echo "$(YELLOW)🚀 Запуск агента (режим реальный)...$(NC)"
+	@echo "$(YELLOW) Запуск агента (режим реальный)...$(NC)"
 	@if [ ! -f $(CONFIG_FILE) ]; then \
 		echo "$(RED)❌ Файл $(CONFIG_FILE) не найден!$(NC)"; \
 		exit 1; \
 	fi
-	cd $(BUILD_DIR) && ./web-agent ../config/config.json
+	cd $(BUILD_DIR) && ./web-agent ../$(CONFIG_FILE)
 
 run-mock:
 	@echo "$(YELLOW)🚀 Запуск агента (режим MOCK)...$(NC)"
@@ -75,15 +78,6 @@ run-mock:
 		echo "$(RED)❌ Файл $(CONFIG_FILE) не найден!$(NC)"; \
 		exit 1; \
 	fi
-	cd $(BUILD_DIR) && WEB_AGENT_MOCK=1 ./web-agent
-
-format:
-	@echo "$(YELLOW)🎨 Форматирование кода...$(NC)"
-	@if command -v clang-format >/dev/null 2>&1; then \
-		find src -name '*.cpp' -o -name '*.h' | xargs clang-format -i; \
-		echo "$(GREEN)✅ Код отформатирован$(NC)"; \
-	else \
-		echo "$(RED)❌ clang-format не установлен$(NC)"; \
-	fi
+	cd $(BUILD_DIR) && WEB_AGENT_MOCK=1 ./web-agent ../$(CONFIG_FILE)
 
 default: help

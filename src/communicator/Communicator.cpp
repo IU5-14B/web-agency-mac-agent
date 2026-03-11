@@ -23,23 +23,36 @@ std::string Communicator::buildUrl(const std::string& endpoint) const {
 std::optional<std::string> Communicator::mockRegister(const std::string& uid) {
     spdlog::info("[MOCK] Registering agent with UID: {}", uid);
     
-    // Генерируем случайный access_code
+    // Формат: xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx (6-4-4-4-8 = 28 символов)
+    // Без дефиса в конце!
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 15);
+    const char* hex = "0123456789abcdef";
     
-    const char* hex_digits = "0123456789abcdef";
-    std::string code(32, '0');
-    for (int i = 0; i < 32; ++i) {
-        code[i] = hex_digits[dis(gen)];
-    }
-    // Форматируем как в примере: "594807-1ddb-36af-9616-d8ed2b9d"
-    std::string formatted = code.substr(0, 6) + "-" + code.substr(6, 4) + "-" +
-                           code.substr(10, 4) + "-" + code.substr(14, 4) + "-" +
-                           code.substr(18, 8);
+    std::stringstream ss;
+    // Первая секция: 6 символов
+    for (int i = 0; i < 6; i++) ss << hex[dis(gen)];
+    ss << '-';
     
-    spdlog::info("[MOCK] Registration successful, access code: {}", formatted);
-    return formatted;
+    // Вторая секция: 4 символа
+    for (int i = 0; i < 4; i++) ss << hex[dis(gen)];
+    ss << '-';
+    
+    // Третья секция: 4 символа
+    for (int i = 0; i < 4; i++) ss << hex[dis(gen)];
+    ss << '-';
+    
+    // Четвёртая секция: 4 символа
+    for (int i = 0; i < 4; i++) ss << hex[dis(gen)];
+    ss << '-';
+    
+    // Пятая секция: 8 символов (без дефиса в конце!)
+    for (int i = 0; i < 8; i++) ss << hex[dis(gen)];
+    
+    std::string result = ss.str();
+    spdlog::info("[MOCK] Registration successful, access code: {}", result);
+    return result;
 }
 
 // Заглушка для получения задания
@@ -50,19 +63,23 @@ std::optional<nlohmann::json> Communicator::mockFetchTask(const std::string& uid
     
     // Каждый третий раз возвращаем задание, иначе "нет задания"
     if (mockTaskCounter_ % 3 == 0) {
-        // Генерируем session_id
+        // Генерируем session_id в формате UUID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis(0, 15);
-        const char* chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        std::string session_id(36, '0');
-        for (int i = 0; i < 36; ++i) {
-            if (i == 8 || i == 13 || i == 18 || i == 23) {
-                session_id[i] = '-';
-            } else {
-                session_id[i] = chars[dis(gen) % 62];
-            }
-        }
+        const char* hex = "0123456789abcdef";
+        
+        std::string session_id(36, '-');
+        // 8 символов
+        for (int i = 0; i < 8; i++) session_id[i] = hex[dis(gen)];
+        // 4 символа
+        for (int i = 9; i < 13; i++) session_id[i] = hex[dis(gen)];
+        // 4 символа
+        for (int i = 14; i < 18; i++) session_id[i] = hex[dis(gen)];
+        // 4 символа
+        for (int i = 19; i < 23; i++) session_id[i] = hex[dis(gen)];
+        // 12 символов
+        for (int i = 24; i < 36; i++) session_id[i] = hex[dis(gen)];
         
         nlohmann::json task = {
             {"code_response", 1},

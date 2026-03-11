@@ -19,6 +19,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(spdlog)
 target_link_libraries(web-agent PRIVATE spdlog::spdlog_header_only)
 
+#CPR
 FetchContent_Declare(
     cpr
     GIT_REPOSITORY https://github.com/libcpr/cpr.git
@@ -26,3 +27,20 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cpr)
 target_link_libraries(web-agent PRIVATE cpr::cpr)
+
+
+# GTests
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(CMAKE_CXX_STANDARD 17)
+FetchContent_MakeAvailable(googletest)
+
+# Добавляем флаг для совместимости
+target_compile_definitions(gtest PRIVATE GTEST_INTERNAL_ATTRIBUTE_MAYBE_UNUSED=)
+target_compile_definitions(gtest_main PRIVATE GTEST_INTERNAL_ATTRIBUTE_MAYBE_UNUSED=)
+target_compile_definitions(gmock PRIVATE GTEST_INTERNAL_ATTRIBUTE_MAYBE_UNUSED=)
+target_compile_definitions(gmock_main PRIVATE GTEST_INTERNAL_ATTRIBUTE_MAYBE_UNUSED=)
