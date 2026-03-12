@@ -134,18 +134,22 @@ std::optional<nlohmann::json> Communicator::mockFetchTask(const std::string& uid
  * @param filePaths Paths to result files
  * @return true (always successful in mock mode)
  */
-bool Communicator::mockSendResult(const std::string& uid, const std::string& accessCode,
-                                 const std::string& sessionId, int resultCode,
-                                 const std::string& message, int filesCount,
-                                 const std::vector<std::string>& filePaths) {
-    spdlog::info("[MOCK] Sending result for session: {}", sessionId);
-    spdlog::info("[MOCK]   result_code: {}, message: {}, files: {}", resultCode, message, filesCount);
+bool Communicator::mockSendResult(const std::string& uid, 
+                                  const std::string& accessCode,
+                                  const std::string& sessionId, 
+                                  int resultCode,
+                                  const std::string& message, 
+                                  int filesCount,
+                                  const std::vector<std::string>& filePaths) {
+    
+    spdlog::info("[MOCK] 📤 Sending result for session: {}", sessionId);
+    spdlog::info("[MOCK]    result_code: {}, message: {}, files: {}", resultCode, message, filesCount);
     
     for (size_t i = 0; i < filePaths.size(); ++i) {
-        spdlog::info("[MOCK]   file{}: {}", i+1, filePaths[i]);
+        spdlog::info("[MOCK]    file{}: {}", i+1, filePaths[i]);
     }
     
-    // Всегда успех
+    // Всегда успех в mock-режиме
     return true;
 }
 
@@ -280,15 +284,103 @@ std::optional<nlohmann::json> Communicator::fetchTask(const std::string& uid, co
  * @param filePaths Paths to result files
  * @return true if result sent successfully, false otherwise
  */
-bool Communicator::sendResult(const std::string& uid, const std::string& accessCode,
-                              const std::string& sessionId, int resultCode,
-                              const std::string& message, int filesCount,
+bool Communicator::sendResult(const std::string& uid, 
+                              const std::string& accessCode,
+                              const std::string& sessionId, 
+                              int resultCode,
+                              const std::string& message, 
+                              int filesCount,
                               const std::vector<std::string>& filePaths) {
+    
     if (mockMode_) {
         return mockSendResult(uid, accessCode, sessionId, resultCode, message, filesCount, filePaths);
     }
     
-    // Здесь будет реальная отправка
-    spdlog::warn("Real sendResult not implemented yet");
-    return false;
+    spdlog::info("📤 Sending result for session: {}", sessionId);
+    spdlog::info("   result_code: {}, message: {}, files: {}", resultCode, message, filesCount);
+    
+    // 1. Формируем JSON для поля result
+    nlohmann::json result_json;
+    result_json["UID"] = uid;
+    result_json["access_code"] = accessCode;
+    result_json["message"] = message;
+    result_json["files"] = filesCount;
+    result_json["session_id"] = sessionId;
+    
+    std::string result_str = result_json.dump();
+    spdlog::debug("Result JSON: {}", result_str);
+    
+    // 2. Создаём multipart запрос (правильный синтаксис CPR)
+    cpr::Multipart multipart{
+        {"result_code", std::to_string(resultCode)},
+        {"result", result_str}
+    };
+    
+    // 3. Добавляем файлы
+    for (size_t i = 0; i < filePaths.size(); ++i) {
+        std::string field_name = "file" + std::to_string(i + 1);
+        const std::string& file_path = filePaths[i];
+        
+        // Проверяем, существует ли файл
+        if (!std::filesystem::exists(file_path)) {
+            spdlog::error("File not found: {}", file_path);
+            continue;
+        }
+        
+        spdlog::debug("Attaching file: {} as {}", file_path, field_name);
+        
+        // Добавляем файл в multipart (правильный синтаксис)
+        multipart.parts.push_back({field_name, cpr::File{file_path}});
+    }
+    
+    // 4. Отправляем запрос
+    std::string url = buildUrl("wa_result/");
+    spdlog::debug("POST to {}", url);
+    
+    auto response = cpr::Post(
+        cpr::Url{url},
+        multipart,
+        cpr::Timeout{30000},  // 30 секунд на загрузку файлов
+        cpr::VerifySsl{false}  // -k флаг (игнорировать SSL ошибки)
+    );
+    
+    // 5. Проверяем ответ
+    if (response.status_code != 200) {
+        spdlog::error("HTTP error: {}", response.status_code);
+        spdlog::error("Response: {}", response.text);
+        return false;
+    }
+    
+    spdlog::debug("Response: {}", response.text);
+    
+    // 6. Парсим ответ сервера
+    try {
+        auto resp_json = nlohmann::json::parse(response.text);
+        
+        // Обрабатываем опечатку в имени поля
+        int code = -1;
+        if (resp_json.contains("code_response")) {
+            auto& val = resp_json["code_response"];
+            if (val.is_string()) code = std::stoi(val.get<std::string>());
+            else code = val.get<int>();
+        } else if (resp_json.contains("code_responce")) {
+            auto& val = resp_json["code_responce"];
+            if (val.is_string()) code = std::stoi(val.get<std::string>());
+            else code = val.get<int>();
+        }
+        
+        if (code == 0) {
+            spdlog::info("✅ Server accepted result");
+            return true;
+        } else {
+            std::string msg = resp_json.value("msg", "Unknown error");
+            spdlog::error("Server error: {} (code {})", msg, code);
+            return false;
+        }
+        
+    } catch (const std::exception& e) {
+        spdlog::error("Failed to parse server response: {}", e.what());
+        spdlog::error("Raw response: {}", response.text);
+        return false;
+    }
 }

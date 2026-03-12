@@ -46,9 +46,12 @@ public:
      * @param filePaths Paths to result files
      * @return true if result sent successfully, false otherwise
      */
-    bool sendResult(const std::string& uid, const std::string& accessCode,
-                    const std::string& sessionId, int resultCode,
-                    const std::string& message, int filesCount,
+    bool sendResult(const std::string& uid, 
+                    const std::string& accessCode,
+                    const std::string& sessionId, 
+                    int resultCode,
+                    const std::string& message, 
+                    int filesCount,
                     const std::vector<std::string>& filePaths);
     
 private:
