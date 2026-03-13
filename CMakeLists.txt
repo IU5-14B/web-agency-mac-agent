@@ -18,7 +18,6 @@ set(SOURCES
     src/agent/Agent.cpp
     src/config/Config.cpp
     src/communicator/Communicator.cpp
-    src/logger/Logger.cpp
     src/executor/TaskExecutor.cpp
     src/utils/Utils.cpp
     src/utils/SignalHandler.cpp

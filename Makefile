@@ -56,7 +56,7 @@ server:
 		echo "$(RED)❌ Не удалось найти server_url в $(CONFIG_FILE)$(NC)"; \
 		exit 1; \
 	fi; \
-	echo "🔍 Проверка $$SERVER_URL..."; \
+	echo " Проверка $$SERVER_URL..."; \
 	curl -k -I --connect-timeout 5 $$SERVER_URL/wa_reg/ 2>/dev/null | head -n 1; \
 	if [ $$? -eq 0 ]; then \
 		echo "$(GREEN)✅ Сервер доступен!$(NC)"; \
@@ -65,7 +65,7 @@ server:
 	fi
 
 run:
-	@echo "$(YELLOW) Запуск агента (режим реальный)...$(NC)"
+	@echo "$(YELLOW)Запуск агента (режим реальный)...$(NC)"
 	@if [ ! -f $(CONFIG_FILE) ]; then \
 		echo "$(RED)❌ Файл $(CONFIG_FILE) не найден!$(NC)"; \
 		exit 1; \
@@ -73,7 +73,7 @@ run:
 	cd $(BUILD_DIR) && ./web-agent ../$(CONFIG_FILE)
 
 run-mock:
-	@echo "$(YELLOW)🚀 Запуск агента (режим MOCK)...$(NC)"
+	@echo "$(YELLOW)Запуск агента (режим MOCK)...$(NC)"
 	@if [ ! -f $(CONFIG_FILE) ]; then \
 		echo "$(RED)❌ Файл $(CONFIG_FILE) не найден!$(NC)"; \
 		exit 1; \

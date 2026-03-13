@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
                     
                     for (const auto& f : result_files) {
                         std::error_code ec;
-                        fs::remove(f, ec);
+                        // fs::remove(f, ec);
                         if (!ec) {
                             spdlog::debug("Removed result file: {}", f);
                         }
