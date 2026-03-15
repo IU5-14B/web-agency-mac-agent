@@ -34,6 +34,8 @@ public:
      */
     void saveAccessCode(const std::string& code);
 
+    std::string getLastConfigPath() const { return last_config_path_; }
+
 private:
     std::string last_config_path_;
 };
