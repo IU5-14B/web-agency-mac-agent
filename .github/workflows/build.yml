@@ -58,5 +58,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: web-agent-macos
-        path: build/bin/web-agent
+        path: |
+          build/web-agent
+          build/bin/web-agent
         if-no-files-found: error
