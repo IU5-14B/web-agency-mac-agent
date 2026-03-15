@@ -4,11 +4,19 @@ on:
   push:
     branches: [ main, master, develop ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: macos-latest
+    timeout-minutes: 30
     
     steps:
     - name: Checkout repository
@@ -16,25 +24,39 @@ jobs:
     
     - name: Install dependencies
       run: |
+        set -euxo pipefail
         brew update
         brew install cmake
         # libcurl уже есть на macOS
         
     - name: Configure CMake
       run: |
+        set -euxo pipefail
         cmake -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
     
     - name: Build
       run: |
+        set -euxo pipefail
         cmake --build build --parallel 4
     
     - name: Run tests
       run: |
-        cd build
-        ctest --output-on-failure
+        set -euxo pipefail
+        ctest --test-dir build --output-on-failure
+
+    - name: Upload CTest logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ctest-logs-macos
+        path: |
+          build/Testing/Temporary/LastTest.log
+          build/Testing/Temporary/LastTestsFailed.log
+        if-no-files-found: ignore
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: web-agent-macos
         path: build/bin/web-agent
+        if-no-files-found: error
