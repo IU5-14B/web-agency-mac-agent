@@ -67,6 +67,39 @@ int TaskExecutor::execute(const Task& task, std::string& message, std::vector<st
     
     spdlog::info("Executing task: code={}, session={}", task.task_code, task.session_id);
     
+    // 🔍 ДИАГНОСТИКА: логируем всё, что пришло
+    spdlog::info("🔍 TASK DETAILS:");
+    spdlog::info("   task_code: {}", task.task_code);
+    spdlog::info("   options: '{}'", task.options);
+    spdlog::info("   session_id: {}", task.session_id);
+    spdlog::info("   status: {}", task.status);
+    
+    // Если это FILE — пока просто логируем и возвращаем успех
+    if (task.task_code == "FILE") {
+        std::string filename = task.options;  // "test.txt"
+        spdlog::info("📁 Looking for file: {}", filename);
+        
+        // Ищем файл в results_dir_ (там обычно лежат результаты)
+        fs::path file_path = fs::path(results_dir_) / filename;
+        
+        if (!fs::exists(file_path)) {
+            // Если нет в results, ищем в work_dir_
+            file_path = fs::path(work_dir_) / filename;
+        }
+        
+        if (fs::exists(file_path)) {
+            spdlog::info("✅ Found file: {}", file_path.string());
+            out_files.push_back(file_path.string());
+            message = "File found and ready to send";
+            return 0;
+        } else {
+            spdlog::error("❌ File not found: {}", filename);
+            message = "File not found: " + filename;
+            return -2;  // файл не найден
+        }
+    }
+    
+    // Дальше идёт существующая логика для CONF/TASK...
     if (task.task_code != "CONF" && task.task_code != "TASK") {
         message = "Unsupported task code: " + task.task_code;
         spdlog::error(message);
