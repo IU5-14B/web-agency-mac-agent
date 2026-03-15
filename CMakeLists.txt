@@ -15,11 +15,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 # Явный список исходников
 set(SOURCES
     src/main.cpp
-    src/agent/Agent.cpp
     src/config/Config.cpp
     src/communicator/Communicator.cpp
     src/executor/TaskExecutor.cpp
-    src/utils/Utils.cpp
     src/utils/SignalHandler.cpp
     src/utils/TaskResponse.cpp
 )

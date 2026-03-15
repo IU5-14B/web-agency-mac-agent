@@ -76,21 +76,3 @@ target_include_directories(test_communicator PRIVATE
 )
 
 gtest_discover_tests(test_communicator)
-
-
-# Тесты для Utils
-add_executable(test_utils 
-    test_utils.cpp
-    ${CMAKE_SOURCE_DIR}/src/utils/Utils.cpp
-)
-
-target_link_libraries(test_utils PRIVATE
-    GTest::gtest_main
-)
-
-target_include_directories(test_utils PRIVATE
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/include
-)
-
-gtest_discover_tests(test_utils)

@@ -10,6 +10,12 @@
 
 namespace fs = std::filesystem;
 
+/**
+ * @brief Construct a TaskExecutor
+ * @param work_dir Directory where tasks are executed
+ * @param results_dir Directory to store result files
+ * @param config Optional pointer to Config for runtime changes
+ */
 TaskExecutor::TaskExecutor(const std::string& work_dir, const std::string& results_dir, Config* config)
     : work_dir_(work_dir), results_dir_(results_dir), config_(config), timeout_(std::chrono::seconds(60)) {
     
@@ -20,16 +26,28 @@ TaskExecutor::TaskExecutor(const std::string& work_dir, const std::string& resul
                   work_dir_, results_dir_, timeout_.count());
 }
 
+/**
+ * @brief Set pointer to runtime Config
+ * @param config Pointer to Config instance
+ */
 void TaskExecutor::setConfig(Config* config) {
     config_ = config;
     spdlog::debug("Config pointer set in TaskExecutor");
 }
 
+/**
+ * @brief Set task execution timeout
+ * @param timeout Timeout duration in seconds
+ */
 void TaskExecutor::setTimeout(std::chrono::seconds timeout) {
     timeout_ = timeout;
     spdlog::debug("TaskExecutor timeout set to {} seconds", timeout_.count());
 }
 
+/**
+ * @brief Collect all regular files from the results directory
+ * @return Vector of file paths found in `results_dir_`
+ */
 std::vector<std::string> TaskExecutor::collectResultFiles() {
     std::vector<std::string> files;
     
@@ -47,6 +65,12 @@ std::vector<std::string> TaskExecutor::collectResultFiles() {
     return files;
 }
 
+/**
+ * @brief Execute a shell command and enforce the configured timeout
+ * @param command Command string to run
+ * @param[out] output Short description of the execution result
+ * @return Process exit code on success, negative on error/timeouts
+ */
 int TaskExecutor::runCommandWithTimeout(const std::string& command, std::string& output) {
     auto future = std::async(std::launch::async, [&command]() {
         return std::system(command.c_str());
@@ -68,6 +92,13 @@ int TaskExecutor::runCommandWithTimeout(const std::string& command, std::string&
     }
 }
 
+/**
+ * @brief Execute a Task based on its `task_code`
+ * @param task Task object describing the action to perform
+ * @param[out] message Human-readable message describing outcome
+ * @param[out] out_files Collected result file paths for sending
+ * @return 0 on success, negative on error or specific failure codes
+ */
 int TaskExecutor::execute(const Task& task, std::string& message, std::vector<std::string>& out_files) {
     
     spdlog::info("Executing task: code={}, session={}", task.task_code, task.session_id);
