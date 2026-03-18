@@ -147,16 +147,11 @@ int main(int argc, char* argv[]) {
             
             if (sent) {
                 spdlog::info("✅ Result sent successfully for session: {}", task.session_id);
-                
-                
+                // Keep result files so user can inspect them locally after upload
                 for (const auto& f : result_files) {
-                    std::error_code ec;
-                    fs::remove(f, ec);
-                    if (!ec) {
-                        spdlog::debug("Removed result file: {}", f);
-                    }
+                    spdlog::info("Result file retained at {}", f);
                 }
-                
+
             } else {
                 spdlog::error("❌ Failed to send result for session: {}", task.session_id);
             }
