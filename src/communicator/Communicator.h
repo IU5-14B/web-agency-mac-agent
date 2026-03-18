@@ -20,6 +20,13 @@ public:
     void setMockMode(bool enable);
     
     /**
+     * @brief Build full URL from endpoint
+     * @param endpoint API endpoint path
+     * @return Complete URL string
+     */
+    std::string buildUrl(const std::string& endpoint) const;
+    
+    /**
      * @brief Register agent with the server
      * @param uid Unique identifier of the agent
      * @param descr Description of the agent (default: "web-agent")
@@ -59,12 +66,6 @@ private:
     bool mockMode_;
     int mockTaskCounter_ = 0;  // для генерации разных заданий
     
-    /**
-     * @brief Build full URL from endpoint
-     * @param endpoint API endpoint path
-     * @return Complete URL string
-     */
-    std::string buildUrl(const std::string& endpoint) const;
     
     /**
      * @brief Mock implementation of agent registration

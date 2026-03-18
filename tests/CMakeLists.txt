@@ -39,6 +39,26 @@ target_include_directories(test_task_response PRIVATE
 gtest_discover_tests(test_task_response)
 
 
+# Тесты для TaskExecutor
+add_executable(test_task_executor
+    test_task_executor.cpp
+    ${CMAKE_SOURCE_DIR}/src/executor/TaskExecutor.cpp
+    ${CMAKE_SOURCE_DIR}/src/config/Config.cpp
+)
+
+target_link_libraries(test_task_executor PRIVATE
+    GTest::gtest_main
+    spdlog::spdlog_header_only
+)
+
+target_include_directories(test_task_executor PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/include
+)
+
+gtest_discover_tests(test_task_executor)
+
+
 # Тесты для SignalHandler
 add_executable(test_signal_handler 
     test_signal_handler.cpp
