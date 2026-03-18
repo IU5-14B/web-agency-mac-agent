@@ -15,23 +15,10 @@ namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) {
     
-    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    console_sink->set_level(spdlog::level::info);
-    
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("agent.log", true);
-    file_sink->set_level(spdlog::level::debug);
-    
-    spdlog::logger logger("agent", {console_sink, file_sink});
-    logger.set_level(spdlog::level::debug);
-    spdlog::set_default_logger(std::make_shared<spdlog::logger>(logger));
-    
-    spdlog::info("Web Agent starting...");
-
-    
+    // Resolve config path early to place log next to project root
     std::string config_path = "config.json";
     if (argc > 1) {
         config_path = argv[1];
-        spdlog::info("Using config from command line: {}", config_path);
     } else {
         if (fs::exists("config/config.json")) {
             config_path = "config/config.json";
@@ -39,6 +26,32 @@ int main(int argc, char* argv[]) {
             config_path = "../config/config.json";
         }
     }
+
+    // Place agent.log in project root (sibling of config/)
+    fs::path log_path = "agent.log";
+    try {
+        fs::path cfg_abs = fs::weakly_canonical(config_path);
+        fs::path root_dir = cfg_abs.parent_path().parent_path();
+        if (!root_dir.empty()) {
+            log_path = root_dir / "agent.log";
+        }
+    } catch (...) {
+        // fall back to default log_path
+    }
+
+    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    console_sink->set_level(spdlog::level::info);
+    
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_path.string(), true);
+    file_sink->set_level(spdlog::level::debug);
+    
+    spdlog::logger logger("agent", {console_sink, file_sink});
+    logger.set_level(spdlog::level::debug);
+    logger.flush_on(spdlog::level::info);
+    spdlog::set_default_logger(std::make_shared<spdlog::logger>(logger));
+    spdlog::flush_every(std::chrono::seconds(1));
+    
+    spdlog::info("Web Agent starting...");
 
     
     Config cfg;
