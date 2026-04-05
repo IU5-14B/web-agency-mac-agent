@@ -1,63 +1,274 @@
-[2026-03-18 19:31:15.878] [agent] [info] Web Agent starting...
-[2026-03-18 19:31:15.879] [agent] [debug] Config loaded: UID=1113, server=https://xdev.arkcom.ru:9999/app/webagent1/api, interval=20
-[2026-03-18 19:31:15.879] [agent] [info] ✅ Config loaded: UID=1113, server=https://xdev.arkcom.ru:9999/app/webagent1/api, interval=20 sec
-[2026-03-18 19:31:15.879] [agent] [debug] TaskExecutor initialized: work_dir=./work, results_dir=./results, timeout=60s
-[2026-03-18 19:31:15.879] [agent] [debug] TaskExecutor timeout set to 60 seconds
-[2026-03-18 19:31:15.879] [agent] [info] Using existing access code: 9897ed-ecef-b94c-0c3e-5f80e76c
-[2026-03-18 19:31:15.879] [agent] [info] Entering main loop. Press Ctrl+C to stop.
-[2026-03-18 19:31:15.879] [agent] [debug] Requesting task from server...
-[2026-03-18 19:31:15.879] [agent] [debug] Fetching task for UID: 1113
-[2026-03-18 19:31:20.889] [agent] [error] Task fetch HTTP error: 0
-[2026-03-18 19:31:20.890] [agent] [error] Failed to fetch task (network error) - 1/5
-[2026-03-18 19:31:40.965] [agent] [debug] Requesting task from server...
-[2026-03-18 19:31:40.965] [agent] [debug] Fetching task for UID: 1113
-[2026-03-18 19:31:41.400] [agent] [debug] Task response: {"code_responce":"1","options":"test.txt","session_id":"qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi","status":"RUN","task_code":"FILE"}
-[2026-03-18 19:31:41.400] [agent] [info] Task received: FILE
-[2026-03-18 19:31:41.402] [agent] [debug] Parsed task: code=FILE, session=qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi
-[2026-03-18 19:31:41.402] [agent] [info] Got task! code=FILE, session=qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi
-[2026-03-18 19:31:41.402] [agent] [info] Executing task: code=FILE, session=qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi
-[2026-03-18 19:31:41.402] [agent] [info] 🔍 TASK DETAILS:
-[2026-03-18 19:31:41.402] [agent] [info]    task_code: FILE
-[2026-03-18 19:31:41.402] [agent] [info]    options: 'test.txt'
-[2026-03-18 19:31:41.402] [agent] [info]    session_id: qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi
-[2026-03-18 19:31:41.402] [agent] [info]    status: RUN
-[2026-03-18 19:31:41.402] [agent] [info] 📁 Looking for file: test.txt
-[2026-03-18 19:31:41.402] [agent] [info] ✅ Found file: ./results/test.txt
-[2026-03-18 19:31:41.402] [agent] [info] Execution result: 0 - File found and ready to send
-[2026-03-18 19:31:41.402] [agent] [info] 📤 Sending result for session: qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi
-[2026-03-18 19:31:41.402] [agent] [info]    result_code: 0, message: File found and ready to send, files: 1
-[2026-03-18 19:31:41.402] [agent] [debug] Result JSON: {"UID":"1113","access_code":"9897ed-ecef-b94c-0c3e-5f80e76c","files":1,"message":"File found and ready to send","session_id":"qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi"}
-[2026-03-18 19:31:41.403] [agent] [debug] Attaching file: ./results/test.txt as file1
-[2026-03-18 19:31:41.403] [agent] [debug] POST to https://xdev.arkcom.ru:9999/app/webagent1/api/wa_result/
-[2026-03-18 19:31:41.735] [agent] [debug] Response: {"code_responce":"0","msg":"ok"}
-[2026-03-18 19:31:41.735] [agent] [info] ✅ Server accepted result
-[2026-03-18 19:31:41.735] [agent] [info] ✅ Result sent successfully for session: qtb1u4kv-b2kc-nqjg-f4uH-i4qLetHuawwi
-[2026-03-18 19:31:41.735] [agent] [info] Result file retained at ./results/test.txt
-[2026-03-18 19:32:01.809] [agent] [debug] Requesting task from server...
-[2026-03-18 19:32:01.809] [agent] [debug] Fetching task for UID: 1113
-[2026-03-18 19:32:02.088] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
-[2026-03-18 19:32:02.088] [agent] [info] No tasks available, status: WAIT
-[2026-03-18 19:32:02.089] [agent] [debug] No tasks, status: WAIT
-[2026-03-18 19:32:22.172] [agent] [debug] Requesting task from server...
-[2026-03-18 19:32:22.173] [agent] [debug] Fetching task for UID: 1113
-[2026-03-18 19:32:22.447] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
-[2026-03-18 19:32:22.447] [agent] [info] No tasks available, status: WAIT
-[2026-03-18 19:32:22.447] [agent] [debug] No tasks, status: WAIT
-[2026-03-18 19:32:42.515] [agent] [debug] Requesting task from server...
-[2026-03-18 19:32:42.515] [agent] [debug] Fetching task for UID: 1113
-[2026-03-18 19:32:42.804] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
-[2026-03-18 19:32:42.804] [agent] [info] No tasks available, status: WAIT
-[2026-03-18 19:32:42.804] [agent] [debug] No tasks, status: WAIT
-[2026-03-18 19:33:02.885] [agent] [debug] Requesting task from server...
-[2026-03-18 19:33:02.885] [agent] [debug] Fetching task for UID: 1113
-[2026-03-18 19:33:03.197] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
-[2026-03-18 19:33:03.197] [agent] [info] No tasks available, status: WAIT
-[2026-03-18 19:33:03.197] [agent] [debug] No tasks, status: WAIT
-[2026-03-18 19:33:23.271] [agent] [debug] Requesting task from server...
-[2026-03-18 19:33:23.271] [agent] [debug] Fetching task for UID: 1113
-[2026-03-18 19:33:23.552] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
-[2026-03-18 19:33:23.552] [agent] [info] No tasks available, status: WAIT
-[2026-03-18 19:33:23.553] [agent] [debug] No tasks, status: WAIT
-[2026-03-18 19:33:41.343] [agent] [warning] Received signal 2, shutting down...
-[2026-03-18 19:33:41.343] [agent] [info] Shutdown requested, cleaning up...
-[2026-03-18 19:33:41.623] [agent] [info] Agent stopped gracefully
+[2026-04-05 15:20:39.814] [agent] [info] Web Agent starting...
+[2026-04-05 15:20:39.815] [agent] [debug] Config loaded: UID=1113, server=https://xdev.arkcom.ru:9999/app/webagent1/api, interval=20
+[2026-04-05 15:20:39.815] [agent] [info] ✅ Config loaded: UID=1113, server=https://xdev.arkcom.ru:9999/app/webagent1/api, interval=20 sec
+[2026-04-05 15:20:39.815] [agent] [debug] TaskExecutor initialized: work_dir=./work, results_dir=./results, timeout=60s
+[2026-04-05 15:20:39.815] [agent] [debug] TaskExecutor timeout set to 60 seconds
+[2026-04-05 15:20:39.815] [agent] [info] Using existing access code: 9897ed-ecef-b94c-0c3e-5f80e76c
+[2026-04-05 15:20:39.815] [agent] [info] Entering main loop. Press Ctrl+C to stop.
+[2026-04-05 15:20:39.815] [agent] [debug] Requesting task from server...
+[2026-04-05 15:20:39.815] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:20:40.736] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:20:40.736] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:20:40.739] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:21:00.805] [agent] [debug] Requesting task from server...
+[2026-04-05 15:21:00.805] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:21:01.085] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:21:01.086] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:21:01.086] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:21:21.135] [agent] [debug] Requesting task from server...
+[2026-04-05 15:21:21.136] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:21:21.424] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:21:21.424] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:21:21.425] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:21:41.481] [agent] [debug] Requesting task from server...
+[2026-04-05 15:21:41.481] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:21:41.760] [agent] [debug] Task response: {"code_responce":"1","options":"echo \"r\" > p.txt","session_id":"vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI","status":"RUN","task_code":"TASK"}
+[2026-04-05 15:21:41.760] [agent] [info] Task received: TASK
+[2026-04-05 15:21:41.762] [agent] [debug] Parsed task: code=TASK, session=vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI
+[2026-04-05 15:21:41.762] [agent] [info] Got task! code=TASK, session=vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI
+[2026-04-05 15:21:41.762] [agent] [info] Executing task: code=TASK, session=vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI
+[2026-04-05 15:21:41.762] [agent] [info] 🔍 TASK DETAILS:
+[2026-04-05 15:21:41.762] [agent] [info]    task_code: TASK
+[2026-04-05 15:21:41.762] [agent] [info]    options: 'echo "r" > p.txt'
+[2026-04-05 15:21:41.763] [agent] [info]    session_id: vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI
+[2026-04-05 15:21:41.763] [agent] [info]    status: RUN
+[2026-04-05 15:21:41.763] [agent] [debug] Changed working directory to: ./work
+[2026-04-05 15:21:41.763] [agent] [info] Running command with 60s timeout: echo "r" > p.txt
+[2026-04-05 15:21:41.779] [agent] [info] Command executed successfully
+[2026-04-05 15:21:41.780] [agent] [debug] Copied p.txt to results
+[2026-04-05 15:21:41.780] [agent] [debug] Found result file: p.txt
+[2026-04-05 15:21:41.780] [agent] [debug] Found result file: test.txt
+[2026-04-05 15:21:41.780] [agent] [info] Collected 2 result files
+[2026-04-05 15:21:41.781] [agent] [debug] Cleaned work directory
+[2026-04-05 15:21:41.781] [agent] [info] Execution result: 0 - Command executed successfully, 2 file(s) created
+[2026-04-05 15:21:41.781] [agent] [info] 📤 Sending result for session: vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI
+[2026-04-05 15:21:41.781] [agent] [info]    result_code: 0, message: Command executed successfully, 2 file(s) created, files: 2
+[2026-04-05 15:21:41.781] [agent] [debug] Result JSON: {"UID":"1113","access_code":"9897ed-ecef-b94c-0c3e-5f80e76c","files":2,"message":"Command executed successfully, 2 file(s) created","session_id":"vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI"}
+[2026-04-05 15:21:41.781] [agent] [debug] Attaching file: ./results/p.txt as file1
+[2026-04-05 15:21:41.781] [agent] [debug] Attaching file: ./results/test.txt as file2
+[2026-04-05 15:21:41.781] [agent] [debug] POST to https://xdev.arkcom.ru:9999/app/webagent1/api/wa_result/
+[2026-04-05 15:21:42.095] [agent] [debug] Response: {"code_responce":"0","msg":"ok"}
+[2026-04-05 15:21:42.095] [agent] [info] ✅ Server accepted result
+[2026-04-05 15:21:42.095] [agent] [info] ✅ Result sent successfully for session: vccbMbiq-eyaO-jbK2-mjzf-MiCLmgeKacjI
+[2026-04-05 15:21:42.095] [agent] [info] Result file retained at ./results/p.txt
+[2026-04-05 15:21:42.095] [agent] [info] Result file retained at ./results/test.txt
+[2026-04-05 15:22:02.159] [agent] [debug] Requesting task from server...
+[2026-04-05 15:22:02.159] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:22:02.442] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:22:02.442] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:22:02.443] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:22:22.505] [agent] [debug] Requesting task from server...
+[2026-04-05 15:22:22.505] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:22:22.781] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:22:22.781] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:22:22.782] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:22:42.829] [agent] [debug] Requesting task from server...
+[2026-04-05 15:22:42.830] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:22:43.108] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:22:43.108] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:22:43.111] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:23:03.174] [agent] [debug] Requesting task from server...
+[2026-04-05 15:23:03.174] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:23:03.455] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:23:03.455] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:23:03.455] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:23:23.514] [agent] [debug] Requesting task from server...
+[2026-04-05 15:23:23.514] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:23:23.794] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:23:23.794] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:23:23.796] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:23:43.860] [agent] [debug] Requesting task from server...
+[2026-04-05 15:23:43.860] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:23:44.141] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:23:44.141] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:23:44.141] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:24:04.197] [agent] [debug] Requesting task from server...
+[2026-04-05 15:24:04.197] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:24:04.477] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:24:04.477] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:24:04.478] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:24:24.530] [agent] [debug] Requesting task from server...
+[2026-04-05 15:24:24.530] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:24:24.819] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:24:24.819] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:24:24.820] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:24:44.878] [agent] [debug] Requesting task from server...
+[2026-04-05 15:24:44.878] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:24:45.155] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:24:45.155] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:24:45.157] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:25:05.221] [agent] [debug] Requesting task from server...
+[2026-04-05 15:25:05.221] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:25:05.512] [agent] [debug] Task response: {"code_responce":"1","options":"p.txt","session_id":"iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK","status":"RUN","task_code":"FILE"}
+[2026-04-05 15:25:05.512] [agent] [info] Task received: FILE
+[2026-04-05 15:25:05.513] [agent] [debug] Parsed task: code=FILE, session=iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK
+[2026-04-05 15:25:05.513] [agent] [info] Got task! code=FILE, session=iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK
+[2026-04-05 15:25:05.514] [agent] [info] Executing task: code=FILE, session=iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK
+[2026-04-05 15:25:05.515] [agent] [info] 🔍 TASK DETAILS:
+[2026-04-05 15:25:05.515] [agent] [info]    task_code: FILE
+[2026-04-05 15:25:05.515] [agent] [info]    options: 'p.txt'
+[2026-04-05 15:25:05.515] [agent] [info]    session_id: iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK
+[2026-04-05 15:25:05.515] [agent] [info]    status: RUN
+[2026-04-05 15:25:05.515] [agent] [info] 📁 Looking for file: p.txt
+[2026-04-05 15:25:05.515] [agent] [info] ✅ Found file: ./results/p.txt
+[2026-04-05 15:25:05.515] [agent] [info] Execution result: 0 - File found and ready to send
+[2026-04-05 15:25:05.515] [agent] [info] 📤 Sending result for session: iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK
+[2026-04-05 15:25:05.515] [agent] [info]    result_code: 0, message: File found and ready to send, files: 1
+[2026-04-05 15:25:05.515] [agent] [debug] Result JSON: {"UID":"1113","access_code":"9897ed-ecef-b94c-0c3e-5f80e76c","files":1,"message":"File found and ready to send","session_id":"iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK"}
+[2026-04-05 15:25:05.515] [agent] [debug] Attaching file: ./results/p.txt as file1
+[2026-04-05 15:25:05.515] [agent] [debug] POST to https://xdev.arkcom.ru:9999/app/webagent1/api/wa_result/
+[2026-04-05 15:25:05.789] [agent] [debug] Response: {"code_responce":"0","msg":"ok"}
+[2026-04-05 15:25:05.790] [agent] [info] ✅ Server accepted result
+[2026-04-05 15:25:05.790] [agent] [info] ✅ Result sent successfully for session: iIkjbLIa-iLD2-ozyw-nZnj-rPLqu4nwaeuK
+[2026-04-05 15:25:05.790] [agent] [info] Result file retained at ./results/p.txt
+[2026-04-05 15:25:25.860] [agent] [debug] Requesting task from server...
+[2026-04-05 15:25:25.861] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:25:26.386] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:25:26.386] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:25:26.389] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:25:46.449] [agent] [debug] Requesting task from server...
+[2026-04-05 15:25:46.449] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:25:46.759] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:25:46.759] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:25:46.761] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:26:06.829] [agent] [debug] Requesting task from server...
+[2026-04-05 15:26:06.830] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:26:07.116] [agent] [debug] Task response: {"code_responce":"1","options":"10","session_id":"a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku","status":"RUN","task_code":"TIMEOUT"}
+[2026-04-05 15:26:07.116] [agent] [info] Task received: TIMEOUT
+[2026-04-05 15:26:07.118] [agent] [debug] Parsed task: code=TIMEOUT, session=a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku
+[2026-04-05 15:26:07.118] [agent] [info] Got task! code=TIMEOUT, session=a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku
+[2026-04-05 15:26:07.118] [agent] [info] Executing task: code=TIMEOUT, session=a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku
+[2026-04-05 15:26:07.118] [agent] [info] 🔍 TASK DETAILS:
+[2026-04-05 15:26:07.118] [agent] [info]    task_code: TIMEOUT
+[2026-04-05 15:26:07.118] [agent] [info]    options: '10'
+[2026-04-05 15:26:07.118] [agent] [info]    session_id: a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku
+[2026-04-05 15:26:07.118] [agent] [info]    status: RUN
+[2026-04-05 15:26:07.118] [agent] [info] TIMEOUT task received (change poll interval)
+[2026-04-05 15:26:07.120] [agent] [debug] Config saved to ../config/config.json
+[2026-04-05 15:26:07.121] [agent] [info] ✅ Poll interval changed to 10 seconds
+[2026-04-05 15:26:07.121] [agent] [info] Execution result: 0 - Poll interval changed to 10 seconds
+[2026-04-05 15:26:07.121] [agent] [info] 📤 Sending result for session: a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku
+[2026-04-05 15:26:07.121] [agent] [info]    result_code: 0, message: Poll interval changed to 10 seconds, files: 0
+[2026-04-05 15:26:07.122] [agent] [debug] Result JSON: {"UID":"1113","access_code":"9897ed-ecef-b94c-0c3e-5f80e76c","files":0,"message":"Poll interval changed to 10 seconds","session_id":"a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku"}
+[2026-04-05 15:26:07.122] [agent] [debug] POST to https://xdev.arkcom.ru:9999/app/webagent1/api/wa_result/
+[2026-04-05 15:26:07.483] [agent] [debug] Response: {"code_responce":"0","msg":"ok"}
+[2026-04-05 15:26:07.483] [agent] [info] ✅ Server accepted result
+[2026-04-05 15:26:07.484] [agent] [info] ✅ Result sent successfully for session: a2Lcvfua-vLrf-qXfs-vhCc-LeuauxMyaiku
+[2026-04-05 15:26:17.513] [agent] [debug] Requesting task from server...
+[2026-04-05 15:26:17.513] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:26:17.839] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:26:17.839] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:26:17.840] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:26:27.858] [agent] [debug] Requesting task from server...
+[2026-04-05 15:26:27.858] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:26:28.133] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:26:28.133] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:26:28.134] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:26:38.167] [agent] [debug] Requesting task from server...
+[2026-04-05 15:26:38.167] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:26:38.447] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:26:38.447] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:26:38.449] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:26:48.482] [agent] [debug] Requesting task from server...
+[2026-04-05 15:26:48.482] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:26:48.759] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:26:48.760] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:26:48.761] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:26:58.794] [agent] [debug] Requesting task from server...
+[2026-04-05 15:26:58.794] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:26:59.083] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:26:59.084] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:26:59.084] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:27:09.106] [agent] [debug] Requesting task from server...
+[2026-04-05 15:27:09.106] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:27:09.391] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:27:09.391] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:27:09.393] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:27:19.434] [agent] [debug] Requesting task from server...
+[2026-04-05 15:27:19.434] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:27:19.722] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:27:19.722] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:27:19.723] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:27:29.756] [agent] [debug] Requesting task from server...
+[2026-04-05 15:27:29.756] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:27:30.036] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:27:30.036] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:27:30.037] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:27:40.058] [agent] [debug] Requesting task from server...
+[2026-04-05 15:27:40.058] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:27:40.347] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:27:40.347] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:27:40.348] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:27:50.366] [agent] [debug] Requesting task from server...
+[2026-04-05 15:27:50.366] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:27:50.644] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:27:50.644] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:27:50.645] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:28:00.680] [agent] [debug] Requesting task from server...
+[2026-04-05 15:28:00.680] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:28:00.968] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:28:00.968] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:28:00.969] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:28:10.992] [agent] [debug] Requesting task from server...
+[2026-04-05 15:28:10.992] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:28:11.268] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:28:11.268] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:28:11.268] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:28:21.293] [agent] [debug] Requesting task from server...
+[2026-04-05 15:28:21.293] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:28:21.579] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:28:21.579] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:28:21.580] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:28:31.605] [agent] [debug] Requesting task from server...
+[2026-04-05 15:28:31.605] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:28:31.885] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:28:31.885] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:28:31.887] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:28:41.912] [agent] [debug] Requesting task from server...
+[2026-04-05 15:28:41.912] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:28:42.194] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:28:42.194] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:28:42.195] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:28:52.218] [agent] [debug] Requesting task from server...
+[2026-04-05 15:28:52.218] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:28:52.508] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:28:52.508] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:28:52.509] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:29:02.538] [agent] [debug] Requesting task from server...
+[2026-04-05 15:29:02.538] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:29:02.816] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:29:02.816] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:29:02.817] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:29:12.848] [agent] [debug] Requesting task from server...
+[2026-04-05 15:29:12.848] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:29:13.137] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:29:13.137] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:29:13.139] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:29:23.179] [agent] [debug] Requesting task from server...
+[2026-04-05 15:29:23.179] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:29:23.886] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:29:23.886] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:29:23.887] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:29:33.914] [agent] [debug] Requesting task from server...
+[2026-04-05 15:29:33.914] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:29:34.230] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:29:34.230] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:29:34.231] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:29:44.268] [agent] [debug] Requesting task from server...
+[2026-04-05 15:29:44.268] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:29:44.557] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:29:44.557] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:29:44.557] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:29:54.581] [agent] [debug] Requesting task from server...
+[2026-04-05 15:29:54.581] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:29:54.892] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:29:54.892] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:29:54.893] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:30:04.925] [agent] [debug] Requesting task from server...
+[2026-04-05 15:30:04.925] [agent] [debug] Fetching task for UID: 1113
+[2026-04-05 15:30:05.207] [agent] [debug] Task response: {"code_responce":"0","status":"WAIT"}
+[2026-04-05 15:30:05.207] [agent] [info] No tasks available, status: WAIT
+[2026-04-05 15:30:05.208] [agent] [debug] No tasks, status: WAIT
+[2026-04-05 15:30:13.302] [agent] [warning] Received signal 2, shutting down...
+[2026-04-05 15:30:13.302] [agent] [info] Shutdown requested, cleaning up...
+[2026-04-05 15:30:14.236] [agent] [info] Agent stopped gracefully
